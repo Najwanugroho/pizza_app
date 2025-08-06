@@ -107,80 +107,93 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Input Nama Pizza
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text("Nama Pizza") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Input Harga
-            OutlinedTextField(
-                value = price,
-                onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
-                        price = newValue
-                    }
-                },
-                label = { Text("Harga (Rp)") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                supportingText = {
-                    if (cleanPrice.isNotEmpty()) {
-                        Text("Preview: ${FormatHelper.toRupiah(cleanPrice.toDoubleOrNull() ?: 0.0)}")
-                    }
-                }
-            )
-
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Tombol Tambah / Update
-            Button(
-                onClick = {
-                    when {
-                        name.isBlank() -> {
-                            Toast.makeText(context, "Nama pizza tidak boleh kosong", Toast.LENGTH_SHORT).show()
-                        }
-                        price.isBlank() -> {
-                            Toast.makeText(context, "Harga pizza tidak boleh kosong", Toast.LENGTH_SHORT).show()
-                        }
-                        price.toDoubleOrNull() == null -> {
-                            Toast.makeText(context, "Harga harus berupa angka", Toast.LENGTH_SHORT).show()
-                        }
-                        else -> {
-                            val priceValue = price.toDouble()
-                            val newPizza = editingPizza?.copy(name = name, price = priceValue)
-                                ?: Pizza(name = name, price = priceValue)
-
-                            if (editingPizza != null) {
-                                viewModel.update(newPizza)
-                                Toast.makeText(context, "Pizza berhasil diupdate", Toast.LENGTH_SHORT).show()
-                            } else {
-                                viewModel.insert(newPizza)
-                                Toast.makeText(context, "Pizza berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-                            }
-
-                            name = ""
-                            price = ""
-                            editingPizza = null
-                        }
-                    }
-                }
-                ,
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFBC02D),
-                    contentColor = Color.Black
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFFFF8E1) // background card kuning pucat
                 )
             ) {
-                Text(if (editingPizza != null) "Update Pizza" else "Tambah Pizza")
+                Column(modifier = Modifier.padding(16.dp)) {
+
+                    // Input Nama Pizza
+                    OutlinedTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text("Nama Pizza") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Input Harga
+                    OutlinedTextField(
+                        value = price,
+                        onValueChange = { newValue ->
+                            if (newValue.all { it.isDigit() }) {
+                                price = newValue
+                            }
+                        },
+                        label = { Text("Harga (Rp)") },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        supportingText = {
+                            if (cleanPrice.isNotEmpty()) {
+                                Text("Preview: ${FormatHelper.toRupiah(cleanPrice.toDoubleOrNull() ?: 0.0)}")
+                            }
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Tombol Tambah / Update
+                    Button(
+                        onClick = {
+                            when {
+                                name.isBlank() -> {
+                                    Toast.makeText(context, "Nama pizza tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                                }
+                                price.isBlank() -> {
+                                    Toast.makeText(context, "Harga pizza tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                                }
+                                price.toDoubleOrNull() == null -> {
+                                    Toast.makeText(context, "Harga harus berupa angka", Toast.LENGTH_SHORT).show()
+                                }
+                                else -> {
+                                    val priceValue = price.toDouble()
+                                    val newPizza = editingPizza?.copy(name = name, price = priceValue)
+                                        ?: Pizza(name = name, price = priceValue)
+
+                                    if (editingPizza != null) {
+                                        viewModel.update(newPizza)
+                                        Toast.makeText(context, "Pizza berhasil diupdate", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        viewModel.insert(newPizza)
+                                        Toast.makeText(context, "Pizza berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                                    }
+
+                                    name = ""
+                                    price = ""
+                                    editingPizza = null
+                                }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFFBC02D),
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text(if (editingPizza != null) "Update Pizza" else "Tambah Pizza")
+                    }
+                }
             }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -191,13 +204,16 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFFFF8E1)
+                )
             ) {
                 Column {
                     // Header dengan counter
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                        color =Color(0xFFFFF8E1),
                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                     ) {
                         Row(
@@ -212,12 +228,12 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                             )
                             Surface(
                                 shape = RoundedCornerShape(20.dp),
-                                color = MaterialTheme.colorScheme.primary
+                                color = Color(0xFFFFC107) // kuning tua untuk badge counter
                             ) {
                                 Text(
                                     text = "${pizzaList.size}",
                                     modifier = Modifier.padding(12.dp, 6.dp),
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = Color.Black,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -238,7 +254,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                 Text(
                                     "Belum ada pizza yang ditambahkan",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = Color.Gray
                                 )
                             }
                         }
@@ -258,8 +274,9 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                         },
                                     colors = CardDefaults.cardColors(
                                         containerColor = if (editingPizza?.id == pizza.id)
-                                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-                                        else MaterialTheme.colorScheme.surface
+                                            Color(0xFFFFF59D)
+                                        else Color(0xFFFFFFFF)
+
                                     ),
                                     shape = RoundedCornerShape(12.dp),
                                     elevation = CardDefaults.cardElevation(
@@ -272,7 +289,6 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                             .padding(16.dp),
                                         horizontalArrangement = Arrangement.SpaceBetween,
                                         verticalAlignment = Alignment.CenterVertically,
-
                                     ) {
                                         Column(
                                             modifier = Modifier.weight(1f)
@@ -297,7 +313,6 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                             onClick = {
                                                 viewModel.delete(pizza)
                                                 if (editingPizza?.id == pizza.id) {
-
                                                     Toast.makeText(
                                                         context,
                                                         "Pizza ${pizza.name} dihapus",
@@ -309,7 +324,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                             Icon(
                                                 Icons.Default.Delete,
                                                 contentDescription = "Hapus Pizza",
-                                                tint = MaterialTheme.colorScheme.error
+                                                tint = Color.Red
                                             )
                                         }
                                     }
