@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,13 +43,13 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
             TopAppBar(
                 title = {
                     Text(
-                        "Pizza Manager",
+                        "Pizza Dex",
                         fontWeight = FontWeight.Bold
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = Color(0xFFF5C25C),
+                    titleContentColor = Color.Black
                 )
             )
         }
@@ -83,7 +84,11 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
             ) {
                 Button(
                     onClick = { showScanner = true },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFBC02D),
+                        contentColor = Color.Black
+                    )
                 ) {
                     Text("Scan QR")
                 }
@@ -92,7 +97,8 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                     onClick = { throw RuntimeException("Test Crash") },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
+                        containerColor = Color(0xFFFFAB91),
+                        contentColor = Color.Black
                     )
                 ) {
                     Text("Crash", color = MaterialTheme.colorScheme.onError)
@@ -167,7 +173,11 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                     }
                 }
                 ,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFBC02D),
+                    contentColor = Color.Black
+                )
             ) {
                 Text(if (editingPizza != null) "Update Pizza" else "Tambah Pizza")
             }
@@ -187,7 +197,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                     // Header dengan counter
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                     ) {
                         Row(
@@ -261,7 +271,8 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                             .fillMaxWidth()
                                             .padding(16.dp),
                                         horizontalArrangement = Arrangement.SpaceBetween,
-                                        verticalAlignment = Alignment.CenterVertically
+                                        verticalAlignment = Alignment.CenterVertically,
+
                                     ) {
                                         Column(
                                             modifier = Modifier.weight(1f)
@@ -277,7 +288,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                             Text(
                                                 text = FormatHelper.toRupiah(pizza.price),
                                                 style = MaterialTheme.typography.bodyLarge,
-                                                color = MaterialTheme.colorScheme.primary,
+                                                color = Color.Black,
                                                 fontWeight = FontWeight.Bold
                                             )
                                         }
