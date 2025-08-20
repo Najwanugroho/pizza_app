@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vdi.pizzaapp.data.Pizza
 import com.vdi.pizzaapp.utils.FormatHelper
-import com.vdi.pizzaapp.viewmodel.PizzaViewModel
+import com.vdi.pizzaapp.viewModel.PizzaViewModel
 import com.vdi.pizzaapp.utils.SharedPreferencesHelper   // 🔹 Pastikan ada di project
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,6 +52,16 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                         "Pizza Dex",
                         fontWeight = FontWeight.Bold
                     )
+                },  actions = {
+                    // Tombol profile di pojok kanan atas
+                    IconButton(onClick = { showNameDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "Profile",
+                            tint = Color.Black,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Color(0xFFF5C25C),
@@ -108,7 +119,39 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                 ) {
                     Text("Crash", color = MaterialTheme.colorScheme.onError)
                 }
+                if (showNameDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showNameDialog = false },
+                        title = { Text("User Profile") },
+                        text = {
+                            Column {
+                                OutlinedTextField(
+                                    value = userName,
+                                    onValueChange = { userName = it },
+                                    label = { Text("Nama Pengguna") }
+                                )
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    prefHelper.saveUserName(userName)
+                                    showNameDialog = false
+                                }
+                            ) {
+                                Text("Simpan")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showNameDialog = false }) {
+                                Text("Batal")
+                            }
+                        }
+                    )
+                }
             }
+
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -342,67 +385,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                 }
             }
 
-            // ================== Pengaturan Nama User ==================
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Pengaturan Pengguna",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { showNameDialog = true },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF90CAF9),
-                    contentColor = Color.Black
-                )
-            ) {
-                Text(if (userName.isNotEmpty()) "Ubah Nama User" else "Masukkan Nama User")
-            }
-
-            if (userName.isNotEmpty()) {
-                Text(
-                    text = "Halo, $userName!",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-
-            if (showNameDialog) {
-                AlertDialog(
-                    onDismissRequest = { showNameDialog = false },
-                    title = { Text("Masukkan Nama Anda") },
-                    text = {
-                        OutlinedTextField(
-                            value = userName,
-                            onValueChange = { userName = it },
-                            label = { Text("Nama User") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                prefHelper.saveUserName(userName)
-                                Toast.makeText(context, "Nama berhasil disimpan", Toast.LENGTH_SHORT).show()
-                                showNameDialog = false
-                            }
-                        ) {
-                            Text("Simpan")
-                        }
-                    },
-                    dismissButton = {
-                        TextButton(onClick = { showNameDialog = false }) {
-                            Text("Batal")
-                        }
-                    }
-                )
             }
         }
     }
-}
+

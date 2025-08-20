@@ -1,4 +1,4 @@
-package com.vdi.pizzaapp.viewmodel
+package com.vdi.pizzaapp.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

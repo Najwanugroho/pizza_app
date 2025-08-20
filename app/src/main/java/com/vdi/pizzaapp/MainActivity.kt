@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import com.vdi.pizzaapp.ui.PizzaScreen
 import com.vdi.pizzaapp.ui.SplashScreen
 import com.vdi.pizzaapp.ui.theme.PizzaappTheme
+import com.vdi.pizzaapp.viewModel.PizzaViewModel
 import com.vdi.pizzaapp.viewModel.VersionViewModel
-import com.vdi.pizzaapp.viewmodel.PizzaViewModel
 
 class MainActivity : ComponentActivity() {
     private val viewModel: PizzaViewModel by viewModels()
