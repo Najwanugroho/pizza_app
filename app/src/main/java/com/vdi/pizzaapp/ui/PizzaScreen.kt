@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.vdi.pizzaapp.data.Pizza
 import com.vdi.pizzaapp.utils.FormatHelper
 import com.vdi.pizzaapp.viewmodel.PizzaViewModel
+import com.vdi.pizzaapp.utils.SharedPreferencesHelper   // 🔹 Pastikan ada di project
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +38,10 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
         price.replace(Regex("[^\\d]"), "")
     }
 
+    // 🔹 Tambahan untuk user prefs
+    val prefHelper = remember { SharedPreferencesHelper(context) }
+    var userName by remember { mutableStateOf(prefHelper.getUserName() ?: "") }
+    var showNameDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -228,7 +233,7 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                             )
                             Surface(
                                 shape = RoundedCornerShape(20.dp),
-                                color = Color(0xFFFFC107) // kuning tua untuk badge counter
+                                color = Color(0xFFFFC107)
                             ) {
                                 Text(
                                     text = "${pizzaList.size}",
@@ -335,6 +340,68 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
 
                     Spacer(modifier = Modifier.height(12.dp))
                 }
+            }
+
+            // ================== Pengaturan Nama User ==================
+            Spacer(modifier = Modifier.height(16.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = "Pengaturan Pengguna",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = { showNameDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF90CAF9),
+                    contentColor = Color.Black
+                )
+            ) {
+                Text(if (userName.isNotEmpty()) "Ubah Nama User" else "Masukkan Nama User")
+            }
+
+            if (userName.isNotEmpty()) {
+                Text(
+                    text = "Halo, $userName!",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            if (showNameDialog) {
+                AlertDialog(
+                    onDismissRequest = { showNameDialog = false },
+                    title = { Text("Masukkan Nama Anda") },
+                    text = {
+                        OutlinedTextField(
+                            value = userName,
+                            onValueChange = { userName = it },
+                            label = { Text("Nama User") },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                prefHelper.saveUserName(userName)
+                                Toast.makeText(context, "Nama berhasil disimpan", Toast.LENGTH_SHORT).show()
+                                showNameDialog = false
+                            }
+                        ) {
+                            Text("Simpan")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showNameDialog = false }) {
+                            Text("Batal")
+                        }
+                    }
+                )
             }
         }
     }
