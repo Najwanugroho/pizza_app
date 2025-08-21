@@ -1,28 +1,30 @@
 # 🍕 Pizza App
 
-Example Crud Application Using Kotlin 
+Example CRUD Application Using Kotlin
 
-## 📦 Fitur Utama
+## 📦 Fitur Keamanan
+- **SQLCipher**  
+  Database lokal terenkripsi menggunakan AES-256.
 
-- Fitur 1 ( Scan QR Code )
-- Fitur 2 ( CRUD Data )
-- Fitur 3 ( CrashAnalityc )
+- **EncryptedSharedPreferences**  
+  Menyimpan data sensitif (seperti nama user) dengan aman.
 
-# 📝 Persyaratan
+- **SSL Pinning (OkHttp)**  
+  Mencegah serangan MITM saat komunikasi dengan server.
 
+## 🚀 Fitur Utama
+- Scan QR Code 
+- CRUD Data 
+- Crash Analytics 
+- User Profile 
+
+
+## 📝 Persyaratan
 - [Android SDK](https://developer.android.com/)
-- [Java Depelovment Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk13-downloads.html)
+- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk13-downloads.html)
 
-# 🛠️ Instalasi
-
+## 🛠️ Instalasi
 Clone atau download repositori ini
 
-```
-git clone https://gitlab.com/anggasayogosm/pizza-app.git
-```
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-
+```bash
+git clone https://github.com/Najwanugroho/pizza_app.git
