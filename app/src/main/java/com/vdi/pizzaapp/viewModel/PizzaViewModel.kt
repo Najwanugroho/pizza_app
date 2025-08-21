@@ -15,4 +15,10 @@ class PizzaViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(pizza: Pizza) = viewModelScope.launch { dao.insert(pizza) }
     fun update(pizza: Pizza) = viewModelScope.launch { dao.update(pizza) }
     fun delete(pizza: Pizza) = viewModelScope.launch { dao.delete(pizza) }
+
+   /* fun logAllPizzas() = viewModelScope.launch {
+        val allPizzas = dao.getAllOnce()
+        android.util.Log.d("DB_CHECK", "Isi database: $allPizzas")
+    }*/
+
 }

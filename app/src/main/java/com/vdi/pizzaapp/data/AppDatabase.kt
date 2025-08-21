@@ -19,12 +19,11 @@ abstract class AppDatabase : RoomDatabase() {
             return INSTANCE ?: synchronized(this) {
 
                 //non encrypted
-            /*    Room.databaseBuilder(
+               /* Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "pizza_db"
-                ).build().also { INSTANCE = it }
-*/
+                ).build().also { INSTANCE = it }*/
 
                 //encrypted
                 SQLiteDatabase.loadLibs(context)

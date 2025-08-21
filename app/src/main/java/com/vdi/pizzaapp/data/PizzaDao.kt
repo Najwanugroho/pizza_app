@@ -16,4 +16,8 @@ interface PizzaDao {
 
     @Delete
     suspend fun delete(pizza: Pizza)
+
+    @Query("SELECT * FROM Pizza")
+    suspend fun getAllOnce(): List<Pizza>
+
 }

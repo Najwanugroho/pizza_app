@@ -224,7 +224,8 @@ fun PizzaScreen(viewModel: PizzaViewModel) {
                                         viewModel.insert(newPizza)
                                         Toast.makeText(context, "Pizza berhasil ditambahkan", Toast.LENGTH_SHORT).show()
                                     }
-
+                                   /* viewModel.logAllPizzas()
+*/
                                     name = ""
                                     price = ""
                                     editingPizza = null
